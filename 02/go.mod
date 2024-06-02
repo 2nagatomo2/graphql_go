@@ -1,4 +1,4 @@
-module github.com/2nagatomo2/graphql_go
+module github.com/2nagatomo2/graphql_go/02
 
 go 1.22.2
 

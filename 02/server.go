@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/2nagatomo2/graphql_go/graph"
+	"github.com/2nagatomo2/graphql_go/02/graph"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 )

@@ -7,7 +7,7 @@ package graph
 import (
 	"context"
 
-	"github.com/2nagatomo2/graphql_go/graph/model"
+	"github.com/2nagatomo2/graphql_go/02/graph/model"
 )
 
 // CreateTodo is the resolver for the createTodo field.
