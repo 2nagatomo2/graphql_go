@@ -1,6 +1,5 @@
 # 02 GraphQLサーバーを動かしてみる
-## 参考書籍
-[Goで学ぶGraphQLサーバーサイド入門](https://zenn.dev/hsaki/books/golang-graphql/viewer/tutorial)
+
 ## 環境構築
 [この記事](https://www.asobou.co.jp/blog/web/gqlgen)を参考にgoでgraphqlを使う環境を構築．
 書籍の第二章の説明のままコマンドを打ってもうまくいかなかった．
