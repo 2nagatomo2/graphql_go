@@ -5,15 +5,14 @@
 書籍の第二章の説明のままコマンドを打ってもうまくいかなかった．
 
 ```
-kazuokinagatomo@kazuoki graphql_go % go mod init github.com/2nagatomo2/graphql_go  
-go: creating new go.mod: module github.com/2nagatomo2/graphql_go
-kazuokinagatomo@kazuoki graphql_go % code tools.go 
-kazuokinagatomo@kazuoki graphql_go % go mod tidy 
-
-kazuokinagatomo@kazuoki graphql_go % 
+% go mod init github.com/2nagatomo2/graphql_go/02
+go: creating new go.mod: module github.com/2nagatomo2/graphql_go/02
+% go get -u github.com/99designs/gqlgen
+% go run github.com/99designs/gqlgen init
+% go mod tidy 
 ```
-## 02 GraphQLサーバーを動かしてみる
-### サンプルコードの生成
+
+## サンプルコードの生成
  以下のようなTODO管理APIのコードが，サンプルで生成される．
  ```
  .
@@ -34,8 +33,8 @@ kazuokinagatomo@kazuoki graphql_go %
 3 directories, 11 files
 ```
 
-#### graph/schema.graphqls - GraphQLスキーマ定義
-##### スキーマとは
+### graph/schema.graphqls - GraphQLスキーマ定義
+#### スキーマとは
 - データの形状を定義する設計図として機能する
 - データの取得方法や変更方法を定義する、クライアントとサーバー間の契約でもある
 つまりスキーマ定義言語(SDL)で書かれたAPI仕様書のようなもの．
@@ -86,10 +85,10 @@ type Mutation {
 
 上記スキーマ定義のidの型定義に「ID!」のように、エクスクラメーションマーク（!、ビックリマーク）がついています。エクスクラメーションマークがついているフィールドは、そのフィールドがnullになることがないことを意味します。つまり、上記例だと、idフィールはnullになることがなく、それ以外のフィールドはnullの可能性があるということを意味します。（記事から引用）
 
-##### GraphQL のスキーマと型定義
+#### GraphQL のスキーマと型定義
 [参考サイト](https://qiita.com/NagaokaKenichi/items/d341dc092012e05d6606)
 
-###### GraphQLの型とは
+##### GraphQLの型とは
 GraphQLには大きく分けるとスカラー型とオブジェクト型がある．（enum型，union型，ルート型もある）
 
 **スカラー型**
@@ -143,7 +142,7 @@ type Mutation {
 }
 ```
 
-#### grapg/model/models_gen.go - オブジェクト構造体の定義
+### grapg/model/models_gen.go - オブジェクト構造体の定義
 `models_gen.go`は`schema.graphqls`で定義されたオブジェクトに対応するGoの構造体型を定義するファイル．
 先頭に
 ```go
@@ -151,7 +150,7 @@ type Mutation {
 ```
 とあるように，自動で生成され，編集はしてはいけない．
 
-#### graph/generated.go - リゾルバをサーバーで稼働させるためのコアロジック部分
+### graph/generated.go - リゾルバをサーバーで稼働させるためのコアロジック部分
 書籍では後に紹介されているが，スキーマとリゾルバメソッドの繋がりを理解するために先に見ておいた方が良いと思う．
 `generated.go`は3845行あるが，その中に，
 ```go
@@ -238,17 +237,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 このコードは自動生成される．編集はできない．
 
-#### graph/resolver.go ・ graph/schema.resolvers.go - リゾルバコード
-##### リゾルバとは
+### graph/resolver.go ・ graph/schema.resolvers.go - リゾルバコード
+#### リゾルバとは
 [参考サイト](https://qiita.com/NagaokaKenichi/items/86272f2f654070b06488)
 スキーマ定義にてクライアントが操作できるクエリや様々な型を定義しています。ただし、スキーマはあくまで定義のみで実際のデータ操作は行いません。実際のデータ操作を行うのがリゾルバというものになります。リゾルバの実態は特定のフィールドのデータを返す関数（メソッド）です。リゾルバはGraphQLサーバー開発者が提供する必要があります。
 
 リゾルバファイルは，スキーマ定義されたフィールドたちの処理をする関数をまとめたファイル
 
-##### graph/resolver.go
+#### graph/resolver.go
 リゾルバ構造体`Resolver`型が定義されている．
 
-##### graph/schema.resolvers.go
+#### graph/schema.resolvers.go
 メソッドが定義されている．
 
 スキーマ内で定義されたクエリ，ミューテーションと，生成されたリゾルバメソッドの対応関係は以下の通り．
@@ -262,17 +261,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 panicとはプログラムの継続的な実行が難しく、どうしよもなくなった時にプログラムを強制的に終了させるために発生するエラーです。
 （[このサイトから引用](https://qiita.com/nayuneko/items/9534858156dfd50b43fb)）
 
-#### server.go - サーバーエントリーポイント
+### server.go - サーバーエントリーポイント
 - デフォルトでは8080番ポートで稼働
 - `/query` にGraphQLリクエストを送ると結果が返ってくる．
 - `/` をブラウザで開くとクエリを実行するためのPlayGroundが使える．
 
-#### gqlgen.yml
+### gqlgen.yml
 コード生成の設定を記述するyamlファイル．見ればなんとなくわかる．
 
-### 生成されたサンプルコードを動かす
+## 生成されたサンプルコードを動かす
 
-#### リゾルバメソッドの記述
+### リゾルバメソッドの記述
 実際はデータベースと接続して，データのinsertやselectをするが，今回は動作確認のため簡略化．
 ```go
 // CreateTodo is the resolver for the createTodo field.
@@ -314,14 +313,14 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 
 こんな感じにした．
 
-#### サーバーの起動
+### サーバーの起動
 エントリポイントである，`server.go`を実行．
 ```
 kazuokinagatomo@kazuoki graphql_go % go run server.go
 2024/06/02 17:39:25 connect to http://localhost:8080/ for GraphQL playground
 ```
 
-#### Playgroundからクエリを実行
+### Playgroundからクエリを実行
 `http://localhost:8080/`をブラウザで開くとPlaygroundにアクセスできる．
 `todos`クエリ，`createTodo`ミューテーションの実行結果は以下
 
