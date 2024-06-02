@@ -1,0 +1,35 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+# Todoという名前の出力型のスキーマ定義
+type Todo {
+  id: ID! # スカラー型（ID）
+  text: String! # スカラー型（String）
+  done: Boolean! # スカラー型（Boolean）
+  user: User! # オブジェクト型（Userスキーマで定義されたフィールドの集合）
+}
+
+# Userという名前の出力型のスキーマ定義
+type User {
+  id: ID! # スカラー型（ID）
+  name: String! # スカラー型（String）
+}
+
+# Queryという名前の出力型のスキーマ定義
+# SQLでいう SELECT は graphqlでは Query という
+type Query {
+  todos: [Todo!]! # オブジェクト型（Todoスキーマで定義されたフィールドの集合のリスト）
+}
+
+# NewTodoという名前の入力型のスキーマ定義
+input NewTodo {
+  text: String! # スカラー型（String）
+  userId: String! # スカラー型（String）
+}
+
+# Mutationという名前の出力型のスキーマ定義
+# SQLでいう CREATE, UPDATE, DELETE  は graphqlでは mutation という
+type Mutation {
+  createTodo(input: NewTodo!): Todo! # オブジェクト型（Todoスキーマで定義されたフィールドの集合）createTodoフィールドはNewTodo型のinputという名前の入力を引数として受け取る．
+}
