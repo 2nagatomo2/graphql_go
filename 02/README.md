@@ -15,7 +15,7 @@ go: creating new go.mod: module github.com/2nagatomo2/graphql_go/02
 ## サンプルコードの生成
  以下のようなTODO管理APIのコードが，サンプルで生成される．
  ```
- .
+.
 ├── README.md
 ├── go.mod
 ├── go.sum
@@ -27,8 +27,7 @@ go: creating new go.mod: module github.com/2nagatomo2/graphql_go/02
 │   ├── resolver.go
 │   ├── schema.graphqls
 │   └── schema.resolvers.go
-├── server.go
-└── tools.go
+└── server.go
 
 3 directories, 11 files
 ```
@@ -44,6 +43,17 @@ go: creating new go.mod: module github.com/2nagatomo2/graphql_go/02
 - どのようなオブジェクト型が用意されているか
 - どのようなクエリ（select）・ミューテーション(insert, update, delete)があるのか
 という情報を記述する．
+
+
+**query, mutation**
+対応関係は以下のようになっている．DBに変更を加えないのがquery，何かしらの変更を加えるのがmutation
+|　　　| REST/SQL | GraphQL |
+|-|-|-|
+| 取得 | SELECT | Query |
+| 登録 | INSERT | Mutation |
+| 更新 | UPDATE | Mutation |
+| 削除 | DELETE | Mutation |
+| 検知 | なし | Subscribe |
 
 ```graphql
 # GraphQL schema example
@@ -256,7 +266,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 **生成時には`panic` が入っているが，ここを書き換えるのがサーバーサイドGraphQLの実装作業．**
 
-**cf ~panic~**
+**cf panic とは**
 `panic` はGo言語におけるランタイムエラーのこと．
 panicとはプログラムの継続的な実行が難しく、どうしよもなくなった時にプログラムを強制的に終了させるために発生するエラーです。
 （[このサイトから引用](https://qiita.com/nayuneko/items/9534858156dfd50b43fb)）
