@@ -52,4 +52,9 @@ resolver:
 
 
 ここまできたら，`go mod init`でプロジェクトを準備し，`go run github.com/99designs/gqlgen generate`でコードを自動生成する．
+ここでは`server.go`は生成されない．
 
+## サーバーエントリポイントの配置
+`server.go`は自作する必要がある．
+前回の雛形を参考に，ディレクトリが変更された部分を修正する．
+具体的には，サーバーインスタンスを作成する際に用いる，`NewExecutableSchema`メソッドがある`generated.go`のディレクトリが変わっているので，そこを修正する．
